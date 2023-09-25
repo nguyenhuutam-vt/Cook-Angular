@@ -28,7 +28,14 @@
       <div class="card-footer">
         <div class="row">
           <div class="col-6">
-            <button class="btn btn-success btn-sm">Edit</button>
+            <button
+              class="btn btn-success btn-sm"
+              data-bs-toggle="modal"
+              data-bs-target="#myModal"
+              (click)="opendEditForm(project)"
+            >
+              Edit
+            </button>
           </div>
           <div class="col-6">
             <button
@@ -48,7 +55,10 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h4 class="modal-title">New Project</h4>
+        <h4 class="modal-title" *ngIf="projectObj.projectId == 0">
+          New Project
+        </h4>
+        <h4 class="modal-title" *ngIf="projectObj.projectId != 0">Update</h4>
         <button
           type="button"
           class="btn-close"
@@ -81,8 +91,21 @@
         <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
           Close
         </button>
-        <button type="button" class="btn btn-danger" (click)="onSave()">
+        <button
+          class="btn btn-sm btn-primary"
+          *ngIf="projectObj.projectId == 0"
+          (click)="onSave()"
+        >
+          <div class="spinner-border spinner-border-sm" *ngIf="isloader"></div>
           Save
+        </button>
+        <button
+          class="btn btn-sm btn-primary"
+          *ngIf="projectObj.projectId != 0"
+          (click)="onEdit()"
+        >
+          <div class="spinner-border spinner-border-sm" *ngIf="isloader"></div>
+          Update
         </button>
       </div>
     </div>

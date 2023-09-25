@@ -7,21 +7,22 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./user.component.css'],
 })
 export class UserComponent implements OnInit {
-  userList : any[]= []
+  userList: any[] = [];
   userObj: any = {
     userId: 0,
     emailId: '',
     fullName: '',
     password: '',
   };
-
+  isloader: boolean = false;
   ngOnInit(): void {
     this.getAllUser();
   }
 
-  constructor(private http: HttpClient){}
+  constructor(private http: HttpClient) {}
 
   getAllUser() {
+    this.isloader = true;
     this.http
       .get('https://freeapi.miniprojectideas.com/api/Jira/GetAllUsers')
       .subscribe((res: any) => {
@@ -34,6 +35,7 @@ export class UserComponent implements OnInit {
   }
 
   onSave() {
+    this.isloader = true;
     this.http
       .post(
         'https://freeapi.miniprojectideas.com/api/Jira/CreateUser',
@@ -48,5 +50,36 @@ export class UserComponent implements OnInit {
         }
       });
   }
-}
+  opendEditForm(data: any) {
+    console.log(data, 'data');
+    this.userObj = data;
+  }
 
+  onEdit() {
+    this.http
+      .put(
+        'https://freeapi.miniprojectideas.com/api/Jira/UpdateUser',
+        this.userObj
+      )
+      .subscribe((res: any) => {
+        if (res.result) {
+          this.getAllUser();
+          alert('Update Success');
+        } else {
+          alert('sai');
+        }
+      });
+  }
+  onClick(id: number) {
+    this.http
+      .delete(
+        'https://freeapi.miniprojectideas.com/api/Jira/DeleteUserById?id=' + id
+      )
+      .subscribe((res: any) => {
+        if (res.result) {
+          alert('Delete success');
+          this.getAllUser();
+        }
+      });
+  }
+}

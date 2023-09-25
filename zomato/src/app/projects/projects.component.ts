@@ -15,13 +15,15 @@ export class ProjectsComponent implements OnInit {
     shortName: '',
     createdDate: new Date(),
   };
-
-  constructor(private http: HttpClient) {}
+  isloader: boolean = false;
+  constructor(private http: HttpClient,
+    ) {}
   ngOnInit(): void {
     this.getAllProject();
   }
 
   getAllProject() {
+    this.isloader = true;
     this.http
       .get('https://freeapi.miniprojectideas.com/api/Jira/GetAllProjects')
       .subscribe((res: any) => {
@@ -34,6 +36,7 @@ export class ProjectsComponent implements OnInit {
   }
 
   onSave() {
+    this.isloader = true;
     this.http
       .post(
         'https://freeapi.miniprojectideas.com/api/Jira/CreateProject',
@@ -60,5 +63,26 @@ export class ProjectsComponent implements OnInit {
           this.getAllProject();
         }
       });
+  }
+  onEdit() {
+    this.http
+      .put(
+        'https://freeapi.miniprojectideas.com/api/Jira/UpdateProject',
+        this.projectObj
+      )
+      .subscribe((res: any) => {
+        if (res.result) {
+          this.getAllProject();
+          alert('Update Success');
+          
+        } else {
+          alert('sai');
+        }
+      });
+  }
+
+  opendEditForm(data: any) {
+    console.log(data, 'data');
+    this.projectObj = data;
   }
 }
