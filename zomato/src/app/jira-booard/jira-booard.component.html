@@ -1,0 +1,47 @@
+<div class="kanban-board">
+  <div
+    class="column"
+    (dragover)="onDragOver($event)"
+    (drop)="onDrop($event, 'To Do')"
+  >
+    <h2>To Do</h2>
+    <div
+      class="task"
+      *ngFor="let item of fillterTickets('To Do')"
+      (dragstart)="onDragStart(item)"
+      draggable="true"
+    >
+      {{ item.ticketId }}
+    </div>
+  </div>
+  <div
+    class="column"
+    (dragover)="onDragOver($event)"
+    (drop)="onDrop($event, 'In Progress')"
+  >
+    <h2>In Progress</h2>
+    <div
+      draggable="true"
+      class="task"
+      *ngFor="let item of fillterTickets('In Progress')"
+      (dragstart)="onDragStart(item)"
+    >
+      {{ item.ticketId }}
+    </div>
+  </div>
+  <div
+    class="column"
+    (dragover)="onDragOver($event)"
+    (drop)="onDrop($event, 'Done')"
+  >
+    <h2>Done</h2>
+    <div
+      class="task"
+      draggable="true"
+      *ngFor="let item of fillterTickets('Done')"
+      (dragstart)="onDragStart(item)"
+    >
+      {{ item.ticketId }}
+    </div>
+  </div>
+</div>
